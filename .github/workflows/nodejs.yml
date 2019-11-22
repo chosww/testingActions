@@ -24,13 +24,21 @@ jobs:
         npm test
       env:
         CI: true
+    - name: Archive artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: build
+          path: build
   deploy: 
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - run: |
-        echo ls
+      - uses: actions/checkout@v1
+      - uses: actions/download-artifact@v1
+        with:
+          name: build
       - uses: maxheld83/ghpages@v0.2.1
-        env :
-          BUILD_DIR: './build'
+        env:
+          BUILD_DIR: 'build/'
+        secrets: ${{ secrets.GH_PAT }}
