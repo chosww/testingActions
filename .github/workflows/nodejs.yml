@@ -24,3 +24,12 @@ jobs:
         npm test
       env:
         CI: true
+  deploy: 
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: maxheld83/ghpages@v0.2.1
+        env :
+          BUILD_DIR: 'build/'
+        secrets: ["GH_PAT"]
